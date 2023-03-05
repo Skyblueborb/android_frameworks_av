@@ -143,10 +143,18 @@ status_t Camera3Device::initialize(sp<CameraProviderManager> manager, const Stri
             res = manager->getCameraCharacteristics(
                     physicalId, &mPhysicalDeviceInfoMap[physicalId]);
             if (res != OK) {
-                SET_ERR_L("Could not retrieve camera %s characteristics: %s (%d)",
+                CLOGW("Could not retrieve camera %s characteristics: %s (%d)",
                         physicalId.c_str(), strerror(-res), res);
+                physicalId = std::to_string(20); // TODO: Maybe make this a soong config?
+                CLOGW("Trying physical camera %s if available", physicalId.c_str());
+                res = manager->getCameraCharacteristics(
+                        physicalId, &mPhysicalDeviceInfoMap[physicalId]);
+                if (res != OK) {
+                    SET_ERR_L("Could not retrieve camera %s characteristics: %s (%d)",
+                            physicalId.c_str(), strerror(-res), res);
                 session->close();
                 return res;
+                }
             }
 
             bool usePrecorrectArray =
