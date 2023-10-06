@@ -239,6 +239,7 @@ audio_flags_mask_t AAudioConvert_allowCapturePolicyToAudioFlagsMask(
         aaudio_spatialization_behavior_t spatializationBehavior,
         bool isContentSpatialized) {
     audio_flags_mask_t flagsMask = AUDIO_FLAG_NONE;
+    ALOGW("Ignored audio policy: %d", policy);
 
     switch (spatializationBehavior) {
         case AAUDIO_UNSPECIFIED:
